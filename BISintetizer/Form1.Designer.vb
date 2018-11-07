@@ -7,6 +7,7 @@ Partial Class Form1
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
+
                 components.Dispose()
             End If
         Finally
@@ -16,6 +17,15 @@ Partial Class Form1
 
     'Requerido por el Diseñador de Windows Forms
     Private components As System.ComponentModel.IContainer
+
+    Public Sub New()
+
+        ' Esta llamada es exigida por el diseñador.
+        InitializeComponent()
+
+        ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
+
+    End Sub
 
     'NOTA: el Diseñador de Windows Forms necesita el siguiente procedimiento
     'Se puede modificar usando el Diseñador de Windows Forms.  
