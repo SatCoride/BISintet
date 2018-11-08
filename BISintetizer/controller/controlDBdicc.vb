@@ -1,14 +1,6 @@
 ﻿Module controlDBdicc
 
-    Sub LlenarTablaQlickViewReport(ByRef listlimp As List(Of List(Of String)))
-        connectDB()
 
-        For Each reg In listlimp
-            nonqueryDB("insert into qlickviewreport (customer,product,date,indicator,value) values ('" & String.Join("','", reg).ToArray() & "')")
-        Next
-
-        disconnectDB()
-    End Sub
     Sub CrearTablaQlikViewReport()
         Dim str = "CREATE TABLE [dbo].[qlickViewReport]
             (

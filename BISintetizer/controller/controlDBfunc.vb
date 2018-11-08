@@ -4,6 +4,36 @@ Module controlDBfunc
     Private myCmd As SqlCommand
     Private myReader As SqlDataReader
     Private results As String
+
+    Sub VaciarTablaQlickViewReport()
+        Dim deldat As String = "DELETE From qlickViewReport;"
+        nonqueryDB(deldat)
+    End Sub
+    Function LlenarTablaQlickViewReport(ByRef listlimp As DataTable)
+        Dim strmsg As String
+        Try
+            connectDB() 'Function For opening connection
+
+            myCmd = myConn.CreateCommand
+            myCmd.CommandText = "fillQliqViewReport"
+            myCmd.CommandType = CommandType.StoredProcedure
+            myCmd.Parameters.AddWithValue("@listlimp", listlimp)
+            myCmd.ExecuteNonQuery()
+            strmsg = "Saved successfully."
+
+        Catch e As SqlException
+            ''strMsg = "Data not saved successfully.";
+            strmsg = e.Message.ToString
+
+        Finally
+
+            disconnectDB() 'Function For closing connection
+        End Try
+
+        Return strmsg
+
+    End Function
+
     Sub nonqueryDB(ByVal cmd As String)
         Try
             myCmd = myConn.CreateCommand

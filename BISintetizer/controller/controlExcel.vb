@@ -4,8 +4,15 @@ Imports System.Runtime.InteropServices
 Module controlExcel
     Function ArrReporteCliqView(ByRef marray(,) As Object)
         Dim pm As String = "Total", tmp As String = "Temp", tmpd As String = "Temp"
-        Dim tmparray As New List(Of List(Of String))
-        tmparray.Add(New List(Of String))
+        Dim cus, pro, ind As String
+        Dim dat As Date
+        Dim valu As Integer
+        Dim tmparray As New DataTable
+        tmparray.Columns.Add("customer", GetType(String))
+        tmparray.Columns.Add("product", GetType(String))
+        tmparray.Columns.Add("date", GetType(DateTime))
+        tmparray.Columns.Add("indicator", GetType(String))
+        tmparray.Columns.Add("value", GetType(Integer))
         Dim cx As Integer = 0
         'Recorre desde eje x
         For x = 3 To marray.GetUpperBound(0)
@@ -22,18 +29,21 @@ Module controlExcel
                         If marray(2, y).ToString <> pm And
                            marray(3, y).ToString <> pm Then
                             'Filtro RC y
-                            tmparray.Add(New List(Of String))
-                            tmparray(cx).Add(Trim(marray(x, 1)).ToString)
-                            tmparray(cx).Add(Trim(marray(x, 2).ToString))
-                            tmparray(cx).Add(CDate(Trim(marray(2, y))).ToString("dd/MM/yyyy"))
-                            tmparray(cx).Add(Trim(marray(1, y).ToString).ToString)
-                            tmparray(cx).Add(Math.Round(Val(Trim(marray(x, y))), 2))
-                            cx += 1
+
+
+                            cus = Trim(marray(x, 1)).ToString
+                            pro = Trim(marray(x, 2).ToString)
+                            dat = CDate(Trim(marray(2, y))).ToString("dd/MM/yyyy")
+                            ind = Trim(marray(1, y).ToString)
+                            valu = Math.Round(Val(Trim(marray(x, y))), 2)
+                            tmparray.Rows.Add(cus, pro, dat, ind, valu)
+
                         End If
                     Next y
                 End If
             End If
         Next x
+        tmparray.AcceptChanges()
         Return tmparray
     End Function
     Function loadArr()
