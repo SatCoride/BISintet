@@ -82,6 +82,7 @@
       <DependentUpon>Form1.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="model\selector.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -120,7 +121,6 @@
     <None Include="tmp\report.xlsx" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="model\" />
     <Folder Include="view\" />
   </ItemGroup>
   <ItemGroup>

@@ -5,12 +5,33 @@ Module controlDBfunc
     Private myReader As SqlDataReader
     Private results As String
 
-    Sub VaciarTablaQlickViewReport()
-        Dim deldat As String = "DELETE From qlickViewReport;"
-        nonqueryDB(deldat)
-    End Sub
+
+    'TEMP
+    Function LlenarTablaFixes(ByRef listlimp As DataTable)
+
+        Try
+            connectDB() 'Function For opening connection
+
+            myCmd = myConn.CreateCommand
+            myCmd.CommandText = "fillFixes"
+            myCmd.CommandType = CommandType.StoredProcedure
+            myCmd.Parameters.AddWithValue("@listlimp", listlimp)
+            myCmd.ExecuteNonQuery()
+            Return True
+        Catch e As SqlException
+            ''strMsg = "Data not saved successfully.";
+            MsgBox(e.Message.ToString)
+            Return False
+        Finally
+
+            disconnectDB() 'Function For closing connection
+        End Try
+
+
+    End Function
+
     Function LlenarTablaQlickViewReport(ByRef listlimp As DataTable)
-        Dim strmsg As String
+
         Try
             connectDB() 'Function For opening connection
 
@@ -19,31 +40,19 @@ Module controlDBfunc
             myCmd.CommandType = CommandType.StoredProcedure
             myCmd.Parameters.AddWithValue("@listlimp", listlimp)
             myCmd.ExecuteNonQuery()
-            strmsg = "Saved successfully."
-
+            Return True
         Catch e As SqlException
             ''strMsg = "Data not saved successfully.";
-            strmsg = e.Message.ToString
-
+            MsgBox(e.Message.ToString)
+            Return False
         Finally
 
             disconnectDB() 'Function For closing connection
         End Try
 
-        Return strmsg
 
     End Function
-
-    Sub nonqueryDB(ByVal cmd As String)
-        Try
-            myCmd = myConn.CreateCommand
-            myCmd.CommandText = cmd
-            myCmd.ExecuteNonQuery()
-        Catch ex As Exception
-            MessageBox.Show("Error while executing query..." & ex.Message, "noQuery")
-        End Try
-    End Sub
-
+    'TEMP
     Sub connectDB()
         Try
             Dim server As String = "(localdb)\MSSQLLocalDB"
@@ -62,6 +71,16 @@ Module controlDBfunc
             MessageBox.Show("Error while disconecting into db..." & ex.Message, "Disconnection")
         End Try
     End Sub
-
+    Sub nonqueryDB(ByVal cmd As String)
+        Try
+            myCmd = myConn.CreateCommand
+            'myCmd = New SqlCommand(cmd)
+            myCmd.CommandText = cmd
+            'myCmd.CommandText = cmd
+            myCmd.ExecuteNonQuery()
+        Catch ex As Exception
+            MessageBox.Show("Error while executing query..." & ex.Message, "noQuery")
+        End Try
+    End Sub
 
 End Module

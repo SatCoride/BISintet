@@ -1,0 +1,71 @@
+Function loadArr(ByVal arch As String)
+        'carga hoja de excel en 
+        Dim xlApp = New Excel.Application
+        Dim wb As Excel.Workbook = xlApp.Workbooks.Open(arch)
+        Dim ws As Excel.Worksheet = wb.ActiveSheet
+        Dim arr(,) As Object
+
+
+
+        'Entorno
+        arr = ws.UsedRange.Value
+
+        NAR(ws)
+        ws = Nothing
+
+
+        wb.Saved = True
+        wb.Close()
+        NAR(wb)
+        wb = Nothing
+
+        xlApp.Workbooks.Close()
+        NAR(xlApp.Workbooks)
+
+        xlApp.Quit()
+        NAR(xlApp)
+        xlApp = Nothing
+
+
+        GC.Collect()
+        GC.WaitForPendingFinalizers()
+        loadArr = arr
+    End Function
+
+============================================================================
+
+    Function loadArr(ByVal arch As String)
+        'carga hoja de excel en 
+        Dim ObjExcel = New Excel.Application
+        ObjExcel.Visible = True
+        Dim DictHojas As New Dictionary(Of Integer, Object)
+        Dim wb As Excel.Workbook = ObjExcel.Workbooks.Open(arch)
+        With ObjExcel
+            .DisplayAlerts = True
+
+
+            For i = 1 To .Worksheets.Count
+
+                DictHojas.Add(i, .Sheets(i).UsedRange.Value)
+
+            Next
+            wb.Saved = True
+
+            wb.Close()
+            wb = Nothing
+            NAR(wb)
+
+
+        End With
+        ObjExcel.Workbooks.Close()
+            NAR(ObjExcel.Workbooks)
+
+            ObjExcel.Quit()
+            NAR(ObjExcel)
+            ObjExcel = Nothing
+
+
+            GC.Collect()
+        GC.WaitForPendingFinalizers()
+        loadArr = DictHojas
+    End Function
